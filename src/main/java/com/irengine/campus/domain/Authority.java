@@ -7,11 +7,10 @@ package com.irengine.campus.domain;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
+@Entity
 @Table(name = "ele_authority")
 public class Authority extends BaseEntity implements Serializable {
 
@@ -27,5 +26,5 @@ public class Authority extends BaseEntity implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

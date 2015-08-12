@@ -3,16 +3,15 @@ package com.irengine.campus.domain;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 班级类型
  * @author wujing
  * */
 
-@RestController
+@Entity
 @Table(name = "ele_nclassType")
 public class TypeOfNClass extends BaseEntity implements Serializable{
 

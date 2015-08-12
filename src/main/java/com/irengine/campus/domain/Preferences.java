@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -14,15 +15,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
 
-import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 选课参数设置
  * @author wujing
  * */
-@RestController
+@Entity
 @Table(name = "ele_preferences")
 public class Preferences extends BaseEntity implements Serializable{
 
@@ -71,8 +70,8 @@ public class Preferences extends BaseEntity implements Serializable{
 		super();
 	}
 
-	public Preferences(Integer th, String info, String num, String name, Date createTime, Date startDate, Date endDate,
-			List<Course> courses, List<Student> students, List<NaturalClass> classes) {
+	public Preferences( String name, Date createTime, Date startDate, Date endDate,
+			List<Course> courses,String num,String info,  Integer th) {
 		super();
 		this.th = th;
 		this.info = info;
@@ -82,8 +81,6 @@ public class Preferences extends BaseEntity implements Serializable{
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.courses = courses;
-		this.students = students;
-		this.classes = classes;
 	}
 
 	public Integer getTh() {
