@@ -4,50 +4,49 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 自然班
- * 
- * @author huang
- *
- */
-@Entity
-@Table(name = "ele_nclass")
-public class NaturalClass extends BaseEntity implements Serializable,Comparable<NaturalClass> {
+ * @author wujing
+ * */
+@RestController
+@Table(name = "ele_nClass")
+public class NaturalClass extends BaseEntity implements Serializable{
 
-	private static final long serialVersionUID = 3213914307361833259L;
+	private static final long serialVersionUID = 1607141401295549225L;
 
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false,length = 50)
 	private Long className;
-
 	@Column(nullable = false)
-	private Integer attendance;// 入学年份
-
+	//入学年份
+	private Integer attendance;
+	
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private TypeOfNClass classType;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
-
-	public String getReturnClassType() {
+	
+	public String getReturnClassType(){
 		return classType.getTypeName();
 	}
-
+	
 	/**
-	 * 按照"高一(1)班"的格式返回
+	 * 按照"2015届高一(1)班"的格式返回
 	 */
-	public String getClassInfo() {
+	public String getClassInfo(){
 		Calendar cal = Calendar.getInstance();
-		int month = cal.get(Calendar.MONTH) + 1;
+		int month = cal.get(Calendar.MONTH)+1;
 		int year = cal.get(Calendar.YEAR);
 		/* 7月份为升级节点 */
 		int num=1;
@@ -63,12 +62,12 @@ public class NaturalClass extends BaseEntity implements Serializable,Comparable<
 		}
 	}
 
-	public Teacher getTeacher() {
-		return teacher;
+	public Long getClassName() {
+		return className;
 	}
 
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
+	public void setClassName(Long className) {
+		this.className = className;
 	}
 
 	public Integer getAttendance() {
@@ -79,14 +78,6 @@ public class NaturalClass extends BaseEntity implements Serializable,Comparable<
 		this.attendance = attendance;
 	}
 
-	public Long getClassName() {
-		return className;
-	}
-
-	public void setClassName(Long className) {
-		this.className = className;
-	}
-
 	public TypeOfNClass getClassType() {
 		return classType;
 	}
@@ -95,9 +86,15 @@ public class NaturalClass extends BaseEntity implements Serializable,Comparable<
 		this.classType = classType;
 	}
 
-	@Override
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+	
 	public int compareTo(NaturalClass o) {
 		return (int) (this.className-o.getClassName());
 	}
-
 }

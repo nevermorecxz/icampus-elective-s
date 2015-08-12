@@ -32,27 +32,21 @@ import com.irengine.campus.service.StudentService;
 import com.irengine.campus.service.UserBaseInfoService;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/students_test")
 public class StudentController {
-
 	private static Logger logger = LoggerFactory
 			.getLogger(StudentController.class);
 
 	@Autowired
 	private StudentService studentService;
-
 	@Autowired
 	private UserBaseInfoService userBaseInfoService;
-
-	@Autowired
-	private PreferenceService preferenceService;
-
 	@Autowired
 	private CourseService courseService;
-
+	@Autowired
+	private PreferenceService preferenceService;
 	@Autowired
 	private ResultOfSelectService resultOfSelectService;
-
 	@Autowired
 	private SelectCourseService selectCourseService;
 
@@ -89,30 +83,30 @@ public class StudentController {
 			return new ResponseEntity<>("该学生不能参与这次选课", HttpStatus.NOT_FOUND);
 		}
 		// allowCourses:可选科目
-		List<Course> allowCourses = new ArrayList<Course>();
-		allowCourses.addAll(preferences.getCourses());
-		/* 得到该同学选择的科目 */
+		List<Course> allowCourse = new ArrayList<Course>();
+		allowCourse.addAll(preferences.getCourses());
+		/* 得到该学生选择的科目 */
 		List<Course> selectCourses = new ArrayList<>();
 		for (Long courseId : courseIds) {
 			Course course = courseService.findOneById(courseId);
 			if (course != null) {
-				if (allowCourses.indexOf(course) == -1) {
+				if (allowCourse.indexOf(course) == -1) {
 					return new ResponseEntity<>("选课错误", HttpStatus.NOT_FOUND);
 				} else {
 					selectCourses.add(course);
-					allowCourses.remove(allowCourses.indexOf(course));
+					allowCourse.remove(allowCourse.indexOf(course));
 				}
 			} else {
 				return new ResponseEntity<>("未知课程", HttpStatus.NOT_FOUND);
 			}
 		}
-
-		if (numVerification(preferences.getNum(), selectCourses.size())) {
+		if (numVarification(preferences.getNum(), selectCourses.size())) {
 			/* 记录选课结果 */
 			// 选课排序后记录
 			Collections.sort(selectCourses, new Comparator<Course>() {
 				@Override
 				public int compare(Course o1, Course o2) {
+					// TODO Auto-generated method stub
 					return (int) (o1.getId() - o2.getId());
 				}
 			});
@@ -121,7 +115,7 @@ public class StudentController {
 			Date date = new Date();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
-			int year = cal.get(Calendar.YEAR);// 得到年
+			int year = cal.get(Calendar.YEAR);
 			int month = cal.get(Calendar.MONTH) + 1;
 			int term = 0;
 			if (month >= 5 && month <= 11) {
@@ -142,9 +136,9 @@ public class StudentController {
 				selectCourses2.add(selectCourse);
 			}
 			/* 保存会考 */
-			for (Course course : allowCourses) {
+			for (Course course : allowCourse) {
 				SelectCourse selectCourse = selectCourseService
-						.save(new SelectCourse(course, false, year, term,
+						.save(new SelectCourse(course, true, year, term,
 								preferences));
 				selectCourses2.add(selectCourse);
 			}
@@ -156,20 +150,13 @@ public class StudentController {
 			// ResultOfSelect result = new ResultOfSelect(preferences,
 			// student,selectCourses);
 			// result = resultOfSelectService.saveOrUpdate(result);
-			return new ResponseEntity<>(student, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>("选课数量错误", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(student,HttpStatus.OK);
+		}else{
+			return new ResponseEntity<>("选课数量错误",HttpStatus.NOT_FOUND);
 		}
 	}
 
-	/**
-	 * 判断选课数目是否符合preferences中的设置
-	 * 
-	 * @param num
-	 * @param size
-	 * @return
-	 */
-	private boolean numVerification(String num, int size) {
+	private boolean numVarification(String num, int size) {
 		String[] strs = num.split(",");
 		int num1 = Integer.parseInt(strs[1]);
 		if ("<".equals(strs[0])) {
@@ -180,5 +167,4 @@ public class StudentController {
 			return size == num1 ? true : false;
 		}
 	}
-
 }

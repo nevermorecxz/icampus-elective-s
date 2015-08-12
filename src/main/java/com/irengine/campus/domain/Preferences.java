@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -15,76 +14,76 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * 选课设置参数
- * 
- * @author huang
- *
- */
-@Entity
+ * 选课参数设置
+ * @author wujing
+ * */
+@RestController
 @Table(name = "ele_preferences")
-public class Preferences extends BaseEntity implements Serializable {
+public class Preferences extends BaseEntity implements Serializable{
 
-	private static final long serialVersionUID = -2550601916320007445L;
+	private static final long serialVersionUID = -72727308611643257L;
 
-	// 第几届选课
 	private Integer th;
-
+	
 	@Column(length = 500)
 	private String info;
-
-	@Column(nullable = false, length = 50)
-	@Pattern(regexp = "[>||=||<][,][0-9]*$")
-	private String num;// 格式:<,1
-
-	@Column(nullable = false, length = 100)
+	
+	@Column(nullable = false,length = 50)
+	@Pattern(regexp = "[<||=||>][,][0-9]*$")
+	private String num;
+	
+	@Column(nullable = false,length = 100)
 	private String name;
-
+	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	private Date createdTime;
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+08:00")
+	private  Date createTime;
+	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+08:00")
 	private Date startDate;
-
+	
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+08:00")
 	private Date endDate;
-
+	
 	@ManyToMany
-	@JoinTable(name = "ele_preferences_courses", joinColumns = @JoinColumn(name = "preferences_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	@JoinTable(name = "ele_preferences_courses",joinColumns = @JoinColumn(name = "preferences_id"),inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> courses = new ArrayList<Course>();
-
+	
 	@ManyToMany
-	@JoinTable(name = "ele_preferences_students", joinColumns = @JoinColumn(name = "preferences_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+	@JoinTable(name = "ele_preferences_students",joinColumns = @JoinColumn(name = "preferences_id"),inverseJoinColumns = @JoinColumn(name = "student_id"))
 	private List<Student> students = new ArrayList<Student>();
-
+	
 	@ManyToMany
-	@JoinTable(name = "ele_preferences_classes", joinColumns = @JoinColumn(name = "preferences_id"), inverseJoinColumns = @JoinColumn(name = "class_id"))
+	@JoinTable(name = "ele_preferences_classes",joinColumns = @JoinColumn(name = "preferences_id"),inverseJoinColumns = @JoinColumn(name = "class_id"))
 	private List<NaturalClass> classes = new ArrayList<NaturalClass>();
 
 	public Preferences() {
 		super();
 	}
 
-	public Preferences(String name, Date createdTime, Date startDate,
-			Date endDate, List<Course> courses, String num, String info,
-			Integer th) {
+	public Preferences(Integer th, String info, String num, String name, Date createTime, Date startDate, Date endDate,
+			List<Course> courses, List<Student> students, List<NaturalClass> classes) {
 		super();
+		this.th = th;
+		this.info = info;
+		this.num = num;
 		this.name = name;
-		this.createdTime = createdTime;
+		this.createTime = createTime;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.courses = courses;
-		this.num = num;
-		this.info = info;
-		this.th = th;
+		this.students = students;
+		this.classes = classes;
 	}
 
 	public Integer getTh() {
@@ -119,12 +118,12 @@ public class Preferences extends BaseEntity implements Serializable {
 		this.name = name;
 	}
 
-	public Date getCreatedTime() {
-		return createdTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public Date getStartDate() {
@@ -166,5 +165,6 @@ public class Preferences extends BaseEntity implements Serializable {
 	public void setClasses(List<NaturalClass> classes) {
 		this.classes = classes;
 	}
-
+	
+	
 }

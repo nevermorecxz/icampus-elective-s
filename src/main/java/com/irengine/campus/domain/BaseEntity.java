@@ -4,11 +4,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-/**
- * 主键
- * @author huang
- *
- */
 @MappedSuperclass
 public class BaseEntity {
 

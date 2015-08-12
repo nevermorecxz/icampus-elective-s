@@ -13,12 +13,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.irengine.campus.security.UserDetailsService;
 import com.irengine.campus.security.xauth.TokenProvider;
 import com.irengine.campus.service.UserBaseInfoService;
 
@@ -31,13 +31,10 @@ public class UserBaseInfoController {
 
 	@Autowired
 	private UserBaseInfoService userBaseInfoService;
-
 	@Inject
 	private TokenProvider tokenProvider;
-
 	@Inject
 	private AuthenticationManager authenticationManager;
-
 	@Inject
 	private UserDetailsService userDetailsService;
 
@@ -52,16 +49,14 @@ public class UserBaseInfoController {
 	public ResponseEntity<?> getToken(
 			@RequestParam("username") String username,
 			@RequestParam("password") String password) {
-		logger.debug("用户"+username+"正在调用获取token接口");
+		logger.debug("用户" + username + "正在调用Token接口");
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 				username, password);
-		Authentication authentication = this.authenticationManager
+		Authentication anthentication = this.authenticationManager
 				.authenticate(token);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		UserDetails details = this.userDetailsService
+		SecurityContextHolder.getContext().setAuthentication(anthentication);
+		UserDetails userDetails = this.userDetailsService
 				.loadUserByUsername(username);
-		return new ResponseEntity<>(tokenProvider.createToken(details),
-				HttpStatus.OK);
+		return new ResponseEntity<>(tokenProvider.createToken(userDetails), HttpStatus.OK);
 	}
-
 }

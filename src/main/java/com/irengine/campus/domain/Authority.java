@@ -1,18 +1,23 @@
 package com.irengine.campus.domain;
 
+/**
+ * 权限
+ * @author wujing
+ * */
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="ele_authority")
-public class Authority extends BaseEntity implements Serializable{
+import org.springframework.web.bind.annotation.RestController;
 
-	private static final long serialVersionUID = -6672370611961694217L;
-	
-	@Column(nullable=false,unique=true,length=50)
+@RestController
+@Table(name = "ele_authority")
+public class Authority extends BaseEntity implements Serializable {
+
+	private static final long serialVersionUID = -6929857710638196792L;
+
+	@Column(nullable = false, unique = true, length = 50)
 	private String name;
 
 	public String getName() {

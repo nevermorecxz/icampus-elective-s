@@ -34,16 +34,12 @@ public class PreferencesController {
 
 	private static Logger logger = LoggerFactory
 			.getLogger(PreferencesController.class);
-
 	@Autowired
 	private PreferenceService preferenceService;
-
 	@Autowired
 	private StudentService studentService;
-
 	@Autowired
 	private CourseService courseService;
-
 	@Autowired
 	private NaturalClassService naturalClassService;
 
@@ -58,16 +54,16 @@ public class PreferencesController {
 			@RequestParam("courseIds") List<Long> courseIds,
 			@RequestParam("num") String num, @RequestParam("info") String info,
 			@RequestParam("th") Integer th) {
-		logger.debug("调用新建选课接口");
+		logger.debug("调用新的选课接口");
 		/* 处理日期 */
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 		Date startDate;
 		Date endDate;
 		try {
 			startDate = sdf.parse(startDateString);
 			endDate = sdf.parse(endDateString);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			e.getStackTrace();
 			return new ResponseEntity<>("日期转换错误", HttpStatus.OK);
 		}
 		/* 记录可选课程集合 */
@@ -91,11 +87,11 @@ public class PreferencesController {
 	 * 
 	 */
 	@RequestMapping(value = "{id}/students", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<?> setStudents(@PathVariable("id") Long id,
+	public ResponseEntity<?> setStudent(@PathVariable("id") Long id,
 			@RequestParam("studentIds") List<Long> studentIds,
-			@RequestParam("nclassIds") List<Long> nclassIds) {
+			@RequestParam("nClassIds") List<Long> nClassIds) {
 		Preferences preferences = preferenceService.findOneById(id);
-		/*额外的参与学生*/
+		/* 额外的参与学生 */
 		if (studentIds != null && studentIds.size() > 0) {
 			List<Student> students = new ArrayList<Student>();
 			for (Long studentId : studentIds) {
@@ -104,29 +100,19 @@ public class PreferencesController {
 			}
 			preferences.setStudents(students);
 		}
-		/*参与班级*/
-		if (nclassIds != null && nclassIds.size() > 0) {
-			List<NaturalClass> nclasses = new ArrayList<NaturalClass>();
-			for (Long nclassId : nclassIds) {
-				NaturalClass nclass = naturalClassService.findOneById(nclassId);
-				if (nclass != null) {
-					nclasses.add(nclass);
+		/* 参与班级 */
+		if (nClassIds != null && nClassIds.size() > 0) {
+			List<NaturalClass> nClasses = new ArrayList<NaturalClass>();
+			for (Long nClassId : nClassIds) {
+				NaturalClass nClass = naturalClassService.findOneById(nClassId);
+				// why?
+				if (nClass != null) {
+					nClasses.add(nClass);
 				}
 			}
-			preferences.setClasses(nclasses);
+			preferences.setClasses(nClasses);
 		}
 		preferences = preferenceService.save(preferences);
 		return new ResponseEntity<>(preferences, HttpStatus.OK);
 	}
-
-	/**
-	 * 查找选课设置
-	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> find() {
-		List<Preferences> mPreferences = new ArrayList<Preferences>();
-		mPreferences = preferenceService.findAll();
-		return new ResponseEntity<>(mPreferences, HttpStatus.OK);
-	}
-
 }
