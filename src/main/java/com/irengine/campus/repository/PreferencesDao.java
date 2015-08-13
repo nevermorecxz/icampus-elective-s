@@ -9,12 +9,12 @@ import org.springframework.data.repository.query.Param;
 
 import com.irengine.campus.domain.Preferences;
 
-public interface PreferencesDao extends JpaRepository<Preferences, Long>{
+public interface PreferencesDao extends JpaRepository<Preferences, Long> {
 
-	@Query("select p from Preferences p where :date>=p.startDate and :date <=p.endDate")
+	@Query("select p from Preferences p where :date>=p.startDate and :date<=p.endDate")
 	List<Preferences> findOneByCurrentTime(@Param("date") Date date);
 
-	@Query("select p from Preferences p where :date>=p.startDate and :date <=p.endDate and p.th=:attendance")
-	Preferences findOneByCurrentTimeAndTh(@Param("date")Date date, @Param("attendance")Integer attendance);
+	@Query("select p from Preferences p where :date>=p.startDate and :date<=p.endDate and p.th=:attendance")
+	Preferences findOneByCurrentTimeAndTh(@Param("date") Date date, @Param("attendance") Integer attendance);
 
 }

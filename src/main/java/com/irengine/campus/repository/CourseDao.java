@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.irengine.campus.domain.Course;
 
-public interface CourseDao extends JpaRepository<Course, Long>{
-	
+public interface CourseDao extends JpaRepository<Course, Long> {
+
 }
