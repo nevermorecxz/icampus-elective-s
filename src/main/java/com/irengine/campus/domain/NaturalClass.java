@@ -1,11 +1,15 @@
 package com.irengine.campus.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -36,6 +40,11 @@ public class NaturalClass extends BaseEntity implements Serializable,Comparable<
 	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
+	
+	// 该老师分组时默认带的班级
+		@ManyToMany
+		@JoinTable(name = "ele_natural_class_teacher", joinColumns = @JoinColumn(name = "natural_class_id"), inverseJoinColumns = @JoinColumn(name = "teacher_id"))
+		private List<Teacher> teachers = new ArrayList<Teacher>();
 
 	public String getReturnClassType() {
 		return classType.getTypeName();
@@ -93,6 +102,16 @@ public class NaturalClass extends BaseEntity implements Serializable,Comparable<
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
+	
+	
+public List<Teacher> getTeachers() {
+		return teachers;
+	}
+
+	public void setTeachers(List<Teacher> teachers) {
+		this.teachers = teachers;
+	}
+
 @Override
 	public int compareTo(NaturalClass o) {
 		return (int) (this.className - o.getClassName());

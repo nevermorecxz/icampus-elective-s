@@ -23,7 +23,6 @@ public class CourseService {
 	}
 
 	public List<Course> findAll() {
-		return courseDao.findAll(new Sort(Direction.ASC,"id"));
+		return courseDao.findAll(new Sort(Direction.ASC, "id"));
 	}
-	
 }

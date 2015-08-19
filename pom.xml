@@ -344,7 +344,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 			<artifactId>poi</artifactId>
 			<version>3.7</version>
 		</dependency>
-			</dependencies>
+	</dependencies>
 	<build>
 		<resources>
 			<resource>

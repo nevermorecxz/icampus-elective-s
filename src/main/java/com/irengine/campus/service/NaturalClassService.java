@@ -17,5 +17,5 @@ public class NaturalClassService {
 	public NaturalClass findOneById(Long nclassId) {
 		return naturalClassDao.findOne(nclassId);
 	}
-	
+
 }

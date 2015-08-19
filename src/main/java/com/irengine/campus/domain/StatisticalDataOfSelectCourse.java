@@ -18,19 +18,29 @@ public class StatisticalDataOfSelectCourse extends BaseEntity implements Seriali
 	private static final long serialVersionUID = -4570431621121700126L;
 	
 	@ManyToOne
-	@JoinColumn(name="prefereneces_id")
-	private Preferences preferences;
+	@JoinColumn(name="arrange_course_id")
+	private ArrangeCourse arrangeCourse;
 	
 	@ManyToMany
 	@JoinTable(name = "ele_statistical_statistical_assist", joinColumns = @JoinColumn(name = "statistical_id"), inverseJoinColumns = @JoinColumn(name = "assist_id"))
 	private List<StatisticalDataOfSelectCourseAssist> data =new ArrayList<StatisticalDataOfSelectCourseAssist>();
 
-	public Preferences getPreferences() {
-		return preferences;
+	public StatisticalDataOfSelectCourse() {
+		super();
 	}
 
-	public void setPreferences(Preferences preferences) {
-		this.preferences = preferences;
+	public StatisticalDataOfSelectCourse(ArrangeCourse arrangeCourse, List<StatisticalDataOfSelectCourseAssist> data) {
+		super();
+		this.arrangeCourse = arrangeCourse;
+		this.data = data;
+	}
+
+	public ArrangeCourse getArrangeCourse() {
+		return arrangeCourse;
+	}
+
+	public void setArrangeCourse(ArrangeCourse arrangeCourse) {
+		this.arrangeCourse = arrangeCourse;
 	}
 
 	public List<StatisticalDataOfSelectCourseAssist> getData() {
